@@ -15,7 +15,6 @@ export const AuthService = {
       email: dto.email,
       password: hashPassword,
     });
-
     return user;
   },
 };

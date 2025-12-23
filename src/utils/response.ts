@@ -3,7 +3,7 @@ export const successResponse = <T>(
   res: Response,
   data: T,
   message = '',
-  statusCode: 200,
+  statusCode: number,
 ) => {
   return res.status(statusCode).json({
     success: true,
