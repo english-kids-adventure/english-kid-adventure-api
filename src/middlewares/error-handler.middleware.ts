@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { errorResponse } from '../utils/response';
+import { errorResponse } from '@utils/response';
 import { ZodError } from 'zod';
-import { HTTP_STATUS } from '../constants/global';
+import { HTTP_STATUS, RESPONSE_MESSAGE } from '@constants/global';
 
 export const errorHandler = (
   err: unknown,
@@ -23,7 +23,7 @@ export const errorHandler = (
 
   return errorResponse(
     res,
-    'Something went wrong',
+    RESPONSE_MESSAGE.SOMETHING_WENT_WRONG,
     HTTP_STATUS.INTERNAL_SERVER_ERROR,
   );
 };

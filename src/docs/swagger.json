@@ -7,8 +7,7 @@
   },
   "servers": [
     {
-      "url": "http://localhost:8080/api/v1",
-      "description": "Local server"
+      "url": "http://localhost:8080/api/v1"
     }
   ],
   "components": {
@@ -76,13 +75,13 @@
             "type": "boolean",
             "example": true
           },
-        "data": {
-        "$ref": "#/components/schemas/UserResponse"
-        },
-        "message": {
+          "data": {
+            "$ref": "#/components/schemas/UserResponse"
+          },
+          "message": {
             "type": "string",
-            "example": "Registration successful"
-        }
+            "example": "Operation successful"
+          }
         }
       }
     }
@@ -91,7 +90,7 @@
     "/auth/register": {
       "post": {
         "tags": ["Auth"],
-        "summary": "Register new user",
+        "summary": "User Register",
         "requestBody": {
           "required": true,
           "content": {
@@ -103,7 +102,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Register success",
             "content": {
               "application/json": {
@@ -112,9 +111,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request"
           }
         }
       }
@@ -150,7 +146,7 @@
         }
       }
     },
-    "/auth/me": {
+    "/auth/tets/tes": {
       "get": {
         "tags": ["Auth"],
         "summary": "Get current user",

@@ -1,7 +1,7 @@
 import express, { Express } from 'express';
 import 'dotenv/config';
-import authRoutes from './modules/auth/auth.route';
-import { errorHandler } from './middlewares/error-handler';
+import authRoutes from '@modules/auth/auth.route';
+import { errorHandler } from '@middlewares/error-handler.middleware';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json';
 import cors from 'cors';

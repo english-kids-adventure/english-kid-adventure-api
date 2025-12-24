@@ -4,4 +4,5 @@ export const AUTH_MESSAGE = {
   UNAUTHORIZED: 'Unauthorized',
   TOKEN_EXPIRED: 'Token expired',
   TOKEN_INVALID: 'Invalid token',
+  MANY_REQUEST: 'Too many requests',
 };

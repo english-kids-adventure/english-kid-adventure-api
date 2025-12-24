@@ -6,12 +6,14 @@ export const HTTP_STATUS = {
   FORBIDDEN: 403,
   NOT_FOUND: 404,
   INTERNAL_SERVER_ERROR: 500,
-} as const;
+  TOO_MANY_REQUESTS: 429,
+};
 
 export const RESPONSE_MESSAGE = {
   SUCCESS: 'Success',
   SERVER_ERROR: 'Internal server error',
   INVALID_REQUEST: 'Invalid request',
+  SOMETHING_WENT_WRONG: 'Something went wrong',
 } as const;
 
 export const PAGINATION = {
