@@ -9,12 +9,17 @@
     "outDir": "./dist",
     "baseUrl": "src",
     "paths": {
-      "@config/*": ["config/*"],
-      "@constants/*": ["constants/*"],
+      "@common/*": ["common/*"],
+      "@config/*": ["common/config/*"],
+      "@constants/*": ["common/constants/*"],
       "@modules/*": ["modules/*"],
-      "@utils/*": ["utils/*"],
-      "@middlewares/*": ["middlewares/*"]
+      "@utils/*": ["common/utils/*"],
+      "@middlewares/*": ["common/middlewares/*"]
     },
+    // "rootDir": "./src"
+    // "rootDir": "src",
+    // "outDir": "dist",
+    // "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],

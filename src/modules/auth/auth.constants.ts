@@ -5,4 +5,6 @@ export const AUTH_MESSAGE = {
   TOKEN_EXPIRED: 'Token expired',
   TOKEN_INVALID: 'Invalid token',
   MANY_REQUEST: 'Too many requests',
+  REGISTER_SUCCESS: 'Register successfully',
+  LOGIN_SUCCESS: 'Login successfully',
 };
