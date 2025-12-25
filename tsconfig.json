@@ -5,7 +5,17 @@
     "target": "ES2023",
     "strict": true,
     "esModuleInterop": true,
+    "resolveJsonModule": true,
     "outDir": "./dist",
+    "baseUrl": "src",
+    "paths": {
+      "@common/*": ["common/*"],
+      "@config/*": ["common/config/*"],
+      "@constants/*": ["common/constants/*"],
+      "@modules/*": ["modules/*"],
+      "@utils/*": ["common/utils/*"],
+      "@middlewares/*": ["common/middlewares/*"]
+    },
     // "rootDir": "./src"
     // "rootDir": "src",
     // "outDir": "dist",
@@ -14,5 +24,4 @@
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"],
   "outDir": "dist",
-  "rootDir": "."
 }

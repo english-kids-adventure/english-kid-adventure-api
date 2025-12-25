@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { errorResponse } from '../utils/response';
+import { errorResponse } from '@utils/response';
 import { ZodError } from 'zod';
+import { HTTP_STATUS, RESPONSE_MESSAGE } from '@constants/global';
 
 export const errorHandler = (
   err: unknown,
@@ -14,11 +15,15 @@ export const errorHandler = (
       message: e.message,
     }));
 
-    return errorResponse(res, issues, 400);
+    return errorResponse(res, issues, HTTP_STATUS.BAD_REQUEST);
   }
   if (err instanceof Error) {
-    return errorResponse(res, err.message, 400);
+    return errorResponse(res, err.message, HTTP_STATUS.BAD_REQUEST);
   }
 
-  return errorResponse(res, 'Something went wrong', 400);
+  return errorResponse(
+    res,
+    RESPONSE_MESSAGE.SOMETHING_WENT_WRONG,
+    HTTP_STATUS.INTERNAL_SERVER_ERROR,
+  );
 };
