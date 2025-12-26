@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '@utils/response';
 import redis from '@config/redis';
-import { AUTH_MESSAGE } from '@modules/auth/auth.constants';
+import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
 import { HTTP_STATUS } from '@constants/global';
 
 interface RateLimitRule {
