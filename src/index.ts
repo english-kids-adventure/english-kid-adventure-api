@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import 'dotenv/config';
+import cookieParser from 'cookie-parser';
 import authRoutes from '@modules/auth/auth.route';
 import { errorHandler } from '@middlewares/error-handler.middleware';
 import swaggerUi from 'swagger-ui-express';
@@ -7,7 +8,13 @@ import swaggerDocument from './docs/swagger.json';
 import cors from 'cors';
 const app: Express = express();
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    credentials: true,
+  }),
+);
 
 const PORT = process.env.PORT || 8080;
 

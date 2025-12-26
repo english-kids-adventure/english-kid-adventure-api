@@ -7,15 +7,14 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "outDir": "./dist",
-    "baseUrl": "src",
     "paths": {
-      "@common/*": ["common/*"],
-      "@config/*": ["common/config/*"],
-      "@constants/*": ["common/constants/*"],
-      "@modules/*": ["modules/*"],
-      "@utils/*": ["common/utils/*"],
-      "@middlewares/*": ["common/middlewares/*"]
-    },
+      "@common/*": ["./src/common/*"],
+      "@config/*": ["./src/common/config/*"],
+      "@constants/*": ["./src/common/constants/*"],
+      "@modules/*": ["./src/modules/*"],
+      "@utils/*": ["./src/common/utils/*"],
+      "@middlewares/*": ["./src/common/middlewares/*"]
+    }
     // "rootDir": "./src"
     // "rootDir": "src",
     // "outDir": "dist",
