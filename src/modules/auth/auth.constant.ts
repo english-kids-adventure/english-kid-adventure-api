@@ -7,4 +7,6 @@ export const AUTH_MESSAGE = {
   MANY_REQUEST: 'Too many requests',
   REGISTER_SUCCESS: 'Register successfully',
   LOGIN_SUCCESS: 'Login successfully',
+  REFRESH_TOKEN_SUCCESS: 'Refresh token successfully',
+  LOGOUT_SUCCESS: 'Logout successfully',
 };
