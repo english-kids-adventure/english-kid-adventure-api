@@ -50,7 +50,7 @@ CREATE TABLE "topics" (
     "id" SERIAL NOT NULL,
     "name" VARCHAR(100) NOT NULL,
     "description" TEXT,
-    "icon_url" TEXT,
+    "thumbnail_url" TEXT,
     "is_active" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "topics_pkey" PRIMARY KEY ("id")
