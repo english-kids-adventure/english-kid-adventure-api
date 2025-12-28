@@ -4,7 +4,7 @@ import { authenticateJWT } from '@common/middlewares/auth.middleware';
 
 const topicRoutes: Router = Router();
 
-topicRoutes.get('/', authenticateJWT, TopicController.getAllTopics);
+topicRoutes.get('/', authenticateJWT, TopicController.getAllTopicsById);
 
 topicRoutes.get('/:id/videos', authenticateJWT, TopicController.getVideosByTopic);
 

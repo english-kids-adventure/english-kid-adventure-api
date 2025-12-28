@@ -3,11 +3,21 @@ import { TopicService } from './topic.service';
 import { HTTP_STATUS } from '@constants/global';
 import { successResponse } from '@common/utils/response';
 import { TOPIC_MESSAGE } from './topic.constant';
+import { AuthRequest } from '@common/middlewares/auth.middleware';
 
 export const TopicController = {
-  async getAllTopics(req: Request, res: Response, next: NextFunction) {
+  async getAllTopicsById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
-      const topics = await TopicService.getAllTopics();
+      const userId = req.user?.userId as number;
+
+      const limit = parseInt(req.query.limit as string) || 10;
+
+      const cursor = req.query.cursor
+        ? parseInt(req.query.cursor as string)
+        : undefined;
+
+      const topics = await TopicService.getAllTopicsById(userId, limit, cursor);
+
       return successResponse(
         res,
         topics,

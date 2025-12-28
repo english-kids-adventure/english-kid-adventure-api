@@ -9,4 +9,5 @@ export const AUTH_MESSAGE = {
   LOGIN_SUCCESS: 'Login successfully',
   REFRESH_TOKEN_SUCCESS: 'Refresh token successfully',
   LOGOUT_SUCCESS: 'Logout successfully',
+  USER_NOT_FOUND: 'User not found',
 };

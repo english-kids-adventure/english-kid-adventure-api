@@ -1,10 +1,28 @@
 import { prisma } from '@config/prisma';
 
 export const TopicRepository = {
-  async findAllTopics() {
+  async findAllTopicsById(userId: number, limit: number, cursor?: number) {
     return await prisma.topic.findMany({
       where: { isActive: true },
+      take: limit,
+      skip: cursor ? 1 : 0,
+      cursor: cursor ? { id: cursor } : undefined,
       orderBy: { id: 'asc' },
+      include: {
+        _count: {
+          select: { videos: true },
+        },
+        videos: {
+          where: {
+            userProgress: {
+              some: {
+                userId,
+                isCompleted: true,
+              },
+            },
+          },
+        },
+      },
     });
   },
 
