@@ -5,7 +5,7 @@ on:
     branches: [ feature/VLIST-100-CI/CD ]
 
 jobs:
-  build-and-push:
+  build-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
