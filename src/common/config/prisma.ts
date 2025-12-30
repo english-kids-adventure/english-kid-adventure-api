@@ -19,7 +19,14 @@ const pool = new pg.Pool({
   },
 });
 
+pool.on('error', (err) => {
+  console.error('❌ POSTGRES POOL ERROR:', err.message);
+});
+
 const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+
+const prisma = new PrismaClient({
+  adapter,
+});
 
 export { prisma };
