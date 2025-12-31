@@ -129,19 +129,138 @@ async function main() {
 
   // ====================== 2. INSERT TOPICS ======================
   const topic1 = await prisma.topic.create({
-    data: { name: 'Animals', description: 'Explore wildlife and pets' },
+    data: {
+      name: 'Animals',
+      description: 'Explore wildlife and pets',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/bd/f3/84/bdf384f541d681ed2ffc27550475fcb2.jpg',
+    },
   });
+
   const topic2 = await prisma.topic.create({
-    data: { name: 'Colors', description: 'Primary and secondary colors' },
+    data: {
+      name: 'Colors',
+      description: 'Primary and secondary colors',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/d0/b2/8b/d0b28b8d287b8b66b2557753aa3e6892.jpg',
+    },
   });
+
   const topic3 = await prisma.topic.create({
-    data: { name: 'Numbers', description: 'Count from 1 to 100' },
+    data: {
+      name: 'Numbers',
+      description: 'Count from 1 to 100',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/6d/8d/42/6d8d42501d7022bf67602715fa9185b5.jpg',
+    },
   });
+
   const topic4 = await prisma.topic.create({
-    data: { name: 'Fruits', description: 'Healthy and delicious treats' },
+    data: {
+      name: 'Fruits',
+      description: 'Healthy and delicious treats',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/ac/50/f4/ac50f465e49be63a2fccde755aec3be8.jpg',
+    },
   });
+
   const topic5 = await prisma.topic.create({
-    data: { name: 'Family', description: 'Members of a household' },
+    data: {
+      name: 'Family',
+      description: 'Members of a household',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/91/6d/81/916d810dbaf18fb361341c000ecfd5bf.jpg',
+    },
+  });
+
+  const topic6 = await prisma.topic.create({
+    data: {
+      name: 'Vehicles',
+      description: 'Cars, bikes, and transportation',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/cf/3c/ee/cf3cee240906c43ff0d7e9a4dc6435b8.jpg',
+    },
+  });
+
+  const topic7 = await prisma.topic.create({
+    data: {
+      name: 'Jobs',
+      description: 'Different kinds of professions',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/4c/34/fd/4c34fde216dd881853eac0f0cc820d60.jpg',
+    },
+  });
+
+  const topic8 = await prisma.topic.create({
+    data: {
+      name: 'Body Parts',
+      description: 'Learn about the human body',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/06/04/73/0604736be6733a6b9bb4ebf5d9570030.jpg',
+    },
+  });
+
+  const topic9 = await prisma.topic.create({
+    data: {
+      name: 'Food',
+      description: 'Meals, snacks, and ingredients',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/f6/32/03/f63203086b30e7bebdbe2313ec0af662.jpg',
+    },
+  });
+
+  const topic10 = await prisma.topic.create({
+    data: {
+      name: 'Sports',
+      description: 'Popular sports and activities',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/f7/05/66/f705667ef2678bdb1bd8d55d3da6c88d.jpg',
+    },
+  });
+
+  const topic11 = await prisma.topic.create({
+    data: {
+      name: 'Weather',
+      description: 'Sunny, rainy, and snowy days',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/39/96/ee/3996eed86cde0584228b5cd75722d436.jpg',
+    },
+  });
+
+  const topic12 = await prisma.topic.create({
+    data: {
+      name: 'Clothes',
+      description: 'What people wear every day',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/5e/54/38/5e5438d49903c68170dd379427473e0f.jpg',
+    },
+  });
+
+  const topic13 = await prisma.topic.create({
+    data: {
+      name: 'Places',
+      description: 'Famous places around the world',
+      thumbnailUrl:
+        'https://i.pinimg.com/736x/07/24/d8/0724d8467b653aba71722288faadd1d8.jpg',
+    },
+  });
+
+  const topic14 = await prisma.topic.create({
+    data: {
+      name: 'Transportation',
+      description: 'Ways people travel',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/e2/ab/2e/e2ab2e11e71214c0f178b355721b2da0.jpg',
+    },
+  });
+
+  const topic15 = await prisma.topic.create({
+    data: {
+      name: 'Music',
+      description: 'Sounds, songs, and instruments',
+      thumbnailUrl:
+        'https://i.pinimg.com/1200x/a5/c5/00/a5c50039349f459a9d3e85b8a9e16d29.jpg',
+    },
   });
 
   // ====================== 3. INSERT VIDEOS ======================
