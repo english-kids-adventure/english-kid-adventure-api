@@ -7,6 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from './docs/swagger.json';
 import cors from 'cors';
 import topicRoutes from '@modules/topics/topic.route';
+import userRoutes from '@modules/users/user.route';
 const app: Express = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -21,6 +22,7 @@ const PORT = process.env.PORT || 8080;
 
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/topics', topicRoutes);
+app.use('/api/v1/users', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(errorHandler);
 app.listen(PORT, () => {
