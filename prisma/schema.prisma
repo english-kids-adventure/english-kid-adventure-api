@@ -5,12 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider        = "prisma-client-js"
+  output          = "../generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 // --- ENUMS ---
@@ -28,29 +28,29 @@ enum MissionType {
 // --- MODELS ---
 
 model User {
-  id               Int      @id @default(autoincrement())
-  name             String   @db.VarChar(50)
-  email            String   @unique @db.VarChar(255)
-  password         String   @db.VarChar(255)
-  avatarUrl        String?  @default("default.png") @map("avatar_url")
-  
-  totalXp          Int      @default(0) @map("total_xp")
-  totalStars       Int      @default(0) @map("total_stars")
-  
-  currentStreak    Int      @default(0) @map("current_streak")
-  longestStreak    Int      @default(0) @map("longest_streak")
-  streakUpdatedAt  DateTime? @db.Date @map("streak_updated_at")
-  lastLoginAt      DateTime? @map("last_login_at")
-  
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(50)
+  email     String  @unique @db.VarChar(255)
+  password  String  @db.VarChar(255)
+  avatarUrl String? @default("default.png") @map("avatar_url")
+
+  totalXp    Int @default(0) @map("total_xp")
+  totalStars Int @default(0) @map("total_stars")
+
+  currentStreak   Int       @default(0) @map("current_streak")
+  longestStreak   Int       @default(0) @map("longest_streak")
+  streakUpdatedAt DateTime? @map("streak_updated_at") @db.Date
+  lastLoginAt     DateTime? @map("last_login_at")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   // Relationships
-  activityLogs     UserActivityLog[]
-  weeklyStats      UserWeeklyStat[]
-  videoProgress    UserVideoProgress[]
-  quizAttempts     UserQuizAttempt[]
-  missionProgress  UserMissionProgress[]
+  activityLogs    UserActivityLog[]
+  weeklyStats     UserWeeklyStat[]
+  videoProgress   UserVideoProgress[]
+  quizAttempts    UserQuizAttempt[]
+  missionProgress UserMissionProgress[]
 
   @@map("users")
 }
@@ -58,7 +58,7 @@ model User {
 model UserActivityLog {
   id           Int      @id @default(autoincrement())
   userId       Int      @map("user_id")
-  activityDate DateTime @db.Date @map("activity_date")
+  activityDate DateTime @map("activity_date") @db.Date
   user         User     @relation(fields: [userId], references: [id])
 
   @@unique([userId, activityDate])
@@ -68,13 +68,13 @@ model UserActivityLog {
 model UserWeeklyStat {
   id                   Int      @id @default(autoincrement())
   userId               Int      @map("user_id")
-  weekStartDate        DateTime @db.Date @map("week_start_date")
+  weekStartDate        DateTime @map("week_start_date") @db.Date
   weeklyXp             Int      @default(0) @map("weekly_xp")
   completedVideosCount Int      @default(0) @map("completed_videos_count")
   finalRank            Int?     @map("final_rank")
   rewardReceived       String?  @map("reward_received")
-  
-  user                 User     @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 
   @@unique([userId, weekStartDate])
   @@index([weekStartDate, weeklyXp])
@@ -82,28 +82,28 @@ model UserWeeklyStat {
 }
 
 model Topic {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique @db.VarChar(100)
-  description String?  @db.Text
-  thumbnailUrl String? @map("thumbnail_url") 
-  isActive    Boolean  @default(true) @map("is_active")
-  videos      Video[]
+  id           Int     @id @default(autoincrement())
+  name         String  @unique @db.VarChar(100)
+  description  String? @db.Text
+  thumbnailUrl String? @map("thumbnail_url")
+  isActive     Boolean @default(true) @map("is_active")
+  videos       Video[]
 
   @@map("topics")
 }
 
 model Video {
-  id           Int        @id @default(autoincrement())
-  topicId      Int        @map("topic_id")
-  title        String     @db.VarChar(150)
-  orderIndex   Int        @default(1) @map("order_index")
-  level        VideoLevel
-  url          String
-  duration     Int?
-  unlockCost   Int        @default(0) @map("unlock_cost")
-  xpReward     Int        @default(50) @map("xp_reward")
-  
-  topic        Topic      @relation(fields: [topicId], references: [id])
+  id         Int        @id @default(autoincrement())
+  topicId    Int        @map("topic_id")
+  title      String     @db.VarChar(150)
+  orderIndex Int        @default(1) @map("order_index")
+  level      VideoLevel
+  url        String
+  duration   Int?
+  unlockCost Int        @default(0) @map("unlock_cost")
+  xpReward   Int        @default(50) @map("xp_reward")
+
+  topic        Topic               @relation(fields: [topicId], references: [id])
   questions    QuizQuestion[]
   userProgress UserVideoProgress[]
   quizAttempts UserQuizAttempt[]
@@ -118,34 +118,34 @@ model UserVideoProgress {
   isUnlocked  Boolean   @default(false) @map("is_unlocked")
   isCompleted Boolean   @default(false) @map("is_completed")
   completedAt DateTime? @map("completed_at")
-  
-  user        User      @relation(fields: [userId], references: [id])
-  video       Video     @relation(fields: [videoId], references: [id])
+
+  user  User  @relation(fields: [userId], references: [id])
+  video Video @relation(fields: [videoId], references: [id])
 
   @@unique([userId, videoId])
   @@map("user_video_progress")
 }
 
 model QuizQuestion {
-  id       Int          @id @default(autoincrement())
-  videoId  Int          @map("video_id")
-  content  String?       @db.Text
-  mediaUrl String?      @map("media_url")
-  
-  video    Video        @relation(fields: [videoId], references: [id])
-  answers  QuizAnswer[]
+  id       Int     @id @default(autoincrement())
+  videoId  Int     @map("video_id")
+  content  String? @db.Text
+  mediaUrl String? @map("media_url")
+
+  video   Video        @relation(fields: [videoId], references: [id])
+  answers QuizAnswer[]
 
   @@map("quiz_questions")
 }
 
 model QuizAnswer {
-  id         Int          @id @default(autoincrement())
-  questionId Int          @map("question_id")
-  content    String?       @db.VarChar(255)
-  mediaUrl   String?      @map("media_url")
-  isCorrect  Boolean      @default(false) @map("is_correct")
-  
-  question   QuizQuestion @relation(fields: [questionId], references: [id])
+  id         Int     @id @default(autoincrement())
+  questionId Int     @map("question_id")
+  content    String? @db.VarChar(255)
+  mediaUrl   String? @map("media_url")
+  isCorrect  Boolean @default(false) @map("is_correct")
+
+  question QuizQuestion @relation(fields: [questionId], references: [id])
 
   @@map("quiz_answers")
 }
@@ -154,27 +154,27 @@ model UserQuizAttempt {
   id               Int      @id @default(autoincrement())
   userId           Int      @map("user_id")
   videoId          Int      @map("video_id")
-  attemptDate      DateTime @db.Date @map("attempt_date")
+  attemptDate      DateTime @map("attempt_date") @db.Date
   timesPlayed      Int      @default(0) @map("times_played")
   dailyStarsEarned Int      @default(0) @map("daily_stars_earned")
-  
-  user             User     @relation(fields: [userId], references: [id])
-  video            Video    @relation(fields: [videoId], references: [id])
+
+  user  User  @relation(fields: [userId], references: [id])
+  video Video @relation(fields: [videoId], references: [id])
 
   @@unique([userId, videoId, attemptDate])
   @@map("user_quiz_attempts")
 }
 
 model Mission {
-  id          Int          @id @default(autoincrement())
-  code        String       @unique @db.VarChar(50)
-  name        String       @db.VarChar(100)
-  description String       @db.VarChar(255)
-  type        MissionType  @default(DAILY)
-  targetCount Int          @default(1) @map("target_count")
-  rewardXp    Int          @default(0) @map("reward_xp")
-  rewardStars Int          @default(0) @map("reward_stars")
-  
+  id          Int         @id @default(autoincrement())
+  code        String      @unique @db.VarChar(50)
+  name        String      @db.VarChar(100)
+  description String      @db.VarChar(255)
+  type        MissionType @default(DAILY)
+  targetCount Int         @default(1) @map("target_count")
+  rewardXp    Int         @default(0) @map("reward_xp")
+  rewardStars Int         @default(0) @map("reward_stars")
+
   userProgress UserMissionProgress[]
 
   @@map("missions")
@@ -186,10 +186,10 @@ model UserMissionProgress {
   missionId    Int      @map("mission_id")
   currentCount Int      @default(0) @map("current_count")
   isClaimed    Boolean  @default(false) @map("is_claimed")
-  resetDate    DateTime @db.Date @map("reset_date")
-  
-  user         User     @relation(fields: [userId], references: [id])
-  mission      Mission  @relation(fields: [missionId], references: [id])
+  resetDate    DateTime @map("reset_date") @db.Date
+
+  user    User    @relation(fields: [userId], references: [id])
+  mission Mission @relation(fields: [missionId], references: [id])
 
   @@unique([userId, missionId, resetDate])
   @@map("user_mission_progress")

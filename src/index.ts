@@ -21,6 +21,9 @@ app.use(
 const PORT = process.env.PORT || 8080;
 
 app.use('/api/v1/auth', authRoutes);
+app.get('/health', (req, res) => {
+  res.status(200).send('OK 🚀');
+});
 app.use('/api/v1/topics', topicRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
