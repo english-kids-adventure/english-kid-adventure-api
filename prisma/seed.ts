@@ -274,6 +274,7 @@ async function main() {
       unlockCost: 0,
       xpReward: 50,
       orderIndex: 1,
+      duration: 50,
       questions: {
         create: [
           {
@@ -421,6 +422,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 60,
       orderIndex: 2,
       questions: {
         create: [

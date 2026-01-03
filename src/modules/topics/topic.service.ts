@@ -1,36 +1,49 @@
 import { TopicRepository } from './topic.repository';
 import { TOPIC_MESSAGE } from './topic.constant';
-import { AuthRepository } from '@modules/auth/auth.repository';
-import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
+import { PaginationParams } from '@common/utils/pagination';
 
 export const TopicService = {
-  async getAllTopicsById(userId: number, limit: number, cursor?: number) {
-    const isUserExists = await AuthRepository.findById(userId);
+  async getAllTopicsById(userId: number, pagination: PaginationParams) {
+    const { limit, offset, page, perPage } = pagination;
 
-    if (!isUserExists) {
-      throw new Error(AUTH_MESSAGE.USER_NOT_FOUND);
-    }
-
-    const results = await TopicRepository.findAllTopicsById(
+    const { topics, total } = await TopicRepository.findAllTopicsById(
       userId,
       limit,
-      cursor,
+      offset,
     );
 
-    const nextCursor = results.length === limit ? results[results.length - 1].id : null;
+    const topicList = topics.map((topic) => {
+      const totalMinutes = topic.videos.reduce(
+        (sum, vid) => sum + (vid.duration || 0),
+        0,
+      );
 
-    const topics = results.map((topic) => ({
-      id: topic.id,
-      name: topic.name,
-      description: topic.description,
-      thumbnailUrl: topic.thumbnailUrl,
-      progress: {
-        totalVideos: topic._count.videos,
-        completedVideos: topic.videos.length,
+      const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
+      const totalVideos = topic._count.videos;
+      const completedVideos = topic.videos.length;
+
+      return {
+        id: topic.id,
+        name: topic.name,
+        description: topic.description,
+        thumbnailUrl: topic.thumbnailUrl,
+        totalHours,
+        progress: {
+          totalVideos,
+          completedVideos,
+        },
+      };
+    });
+
+    return {
+      topics: topicList,
+      pagination: {
+        total,
+        page,
+        perPage,
+        totalPages: Math.ceil(total / perPage),
       },
-    }));
-
-    return { topics, nextCursor };
+    };
   },
 
   async getVideosByTopicId(topicId: number) {

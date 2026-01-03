@@ -5,7 +5,16 @@ import pg from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '../../../generated/prisma/client';
 
-const caPath = path.resolve(process.cwd(), './src/common/config/ca.pem');
+const isProduction = process.env.NODE_ENV === 'production';
+
+const sslConfig = isProduction
+  ? {
+    rejectUnauthorized: true,
+    ca: fs
+      .readFileSync(path.resolve(process.cwd(), './src/common/config/ca.pem'))
+      .toString(),
+  }
+  : false;
 
 const pool = new pg.Pool({
   user: process.env.DATABASE_USER,
@@ -13,20 +22,14 @@ const pool = new pg.Pool({
   host: process.env.DATABASE_HOST,
   port: Number(process.env.DATABASE_PORT),
   database: process.env.DATABASE_NAME,
-  ssl: {
-    rejectUnauthorized: true,
-    ca: fs.readFileSync(caPath).toString(),
-  },
+  ssl: sslConfig,
 });
 
 pool.on('error', (err) => {
-  console.error('❌ POSTGRES POOL ERROR:', err.message);
+  console.error('POSTGRES POOL ERROR:', err.message);
 });
 
 const adapter = new PrismaPg(pool);
-
-const prisma = new PrismaClient({
-  adapter,
-});
+const prisma = new PrismaClient({ adapter });
 
 export { prisma };
