@@ -31,15 +31,7 @@ export const TopicController = {
 
   async getVideosByTopic(req: Request, res: Response, next: NextFunction) {
     try {
-      const topicId = parseInt(req.params.id as string);
-
-      if (isNaN(topicId)) {
-        return res.status(400).json({
-          success: false,
-          error: TOPIC_MESSAGE.INVALID_TOPIC_ID,
-        });
-      }
-
+      const topicId = parseInt(req.params.id);
       const videos = await TopicService.getVideosByTopicId(topicId);
       return successResponse(
         res,
