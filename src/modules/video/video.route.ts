@@ -9,5 +9,5 @@ videoRoutes.post(
   authenticateJWT,
   VideoController.completeVideo,
 );
-
+videoRoutes.post('/:videoId/unlock', authenticateJWT, VideoController.unlockVideo);
 export default videoRoutes;

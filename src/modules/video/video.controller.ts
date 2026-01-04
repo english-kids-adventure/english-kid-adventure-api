@@ -24,4 +24,19 @@ export const VideoController = {
       next(error);
     }
   },
+  async unlockVideo(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user?.userId as number;
+      const videoId = parseInt(req.params.videoId);
+      const result = await VideoService.unlockVideo(userId, videoId);
+      return successResponse(
+        res,
+        result,
+        VIDEO_MESSAGE.UNLOCK_SUCCESS,
+        HTTP_STATUS.OK,
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
 };
