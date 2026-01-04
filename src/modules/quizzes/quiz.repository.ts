@@ -1,4 +1,5 @@
 import { prisma } from '@config/prisma';
+import { getTodayTime } from './quiz.constant';
 
 export const QuizRepository = {
   async findQuizByVideoId(videoId: number) {
@@ -12,5 +13,81 @@ export const QuizRepository = {
 
   async findVideoById(id: number) {
     return await prisma.video.findUnique({ where: { id } });
+  },
+
+  async getToDayAttempt(userId: number, videoId: number) {
+    const today = getTodayTime();
+
+    return await prisma.userQuizAttempt.findUnique({
+      where: {
+        userId_videoId_attemptDate: {
+          userId,
+          videoId,
+          attemptDate: today,
+        },
+      },
+    });
+  },
+
+  async incrementUserTotalStars(userId: number, starsToAward: number) {
+    return await prisma.user.update({
+      where: { id: userId },
+      data: {
+        totalStars: { increment: starsToAward },
+      },
+    });
+  },
+
+  async upsertQuizAttempt(
+    userId: number,
+    videoId: number,
+    starsToAward: number,
+  ) {
+    const today = getTodayTime();
+
+    return await prisma.userQuizAttempt.upsert({
+      where: {
+        userId_videoId_attemptDate: { userId, videoId, attemptDate: today },
+      },
+      update: {
+        timesPlayed: { increment: 1 },
+        dailyStarsEarned: { increment: starsToAward },
+      },
+      create: {
+        userId,
+        videoId,
+        attemptDate: today,
+        timesPlayed: 1,
+        dailyStarsEarned: starsToAward,
+      },
+    });
+  },
+
+  async getUserTotalStars(userId: number) {
+    return await prisma.user.findUnique({
+      where: { id: userId },
+      select: { totalStars: true },
+    });
+  },
+
+  async incrementAttemptOnly(userId: number, videoId: number) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return await prisma.userQuizAttempt.upsert({
+      where: {
+        userId_videoId_attemptDate: { userId, videoId, attemptDate: today },
+      },
+      update: {
+        timesPlayed: { increment: 1 },
+      },
+      create: {
+        userId,
+        videoId,
+        attemptDate: today,
+        timesPlayed: 1,
+        dailyStarsEarned: 0,
+      },
+    });
   },
 };
