@@ -10,4 +10,10 @@ quizRoutes.get(
   QuizController.getQuizByVideoId,
 );
 
+quizRoutes.post(
+  '/video/:videoId/submit',
+  authenticateJWT,
+  QuizController.submitQuiz,
+);
+
 export default quizRoutes;

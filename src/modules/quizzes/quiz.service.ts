@@ -1,5 +1,6 @@
 import { QuizRepository } from './quiz.repository';
 import { QUIZ_MESSAGE } from './quiz.constant';
+import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
 
 export const QuizService = {
   async getQuizByVideoId(videoId: number) {
@@ -26,5 +27,52 @@ export const QuizService = {
       .sort(() => Math.random() - 0.5);
 
     return shuffledQuiz;
+  },
+
+  async submitQuizForUser(
+    userId: number,
+    videoId: number,
+    correctAnswers: number,
+    totalQuestions: number,
+  ) {
+    if (
+      correctAnswers < 0 ||
+      totalQuestions <= 0 ||
+      correctAnswers > totalQuestions
+    ) {
+      throw new Error(QUIZ_MESSAGE.INVALID_SUBMIT_DATA);
+    }
+
+    const todayAttempt = await QuizRepository.getToDayAttempt(userId, videoId);
+    if (todayAttempt && todayAttempt.timesPlayed >= 3) {
+      await QuizRepository.incrementAttemptOnly(userId, videoId);
+      await QuizRepository.getToDayAttempt(userId, videoId);
+
+      throw new Error(QUIZ_MESSAGE.OVER_LIMIT_TODAY);
+    }
+
+    const percentage = correctAnswers / totalQuestions;
+    const starsEarned = Math.round(percentage * 5);
+
+    await QuizRepository.incrementUserTotalStars(userId, starsEarned);
+
+    const updatedAttempt = await QuizRepository.upsertQuizAttempt(
+      userId,
+      videoId,
+      starsEarned,
+    );
+
+    const user = await QuizRepository.getUserTotalStars(userId);
+    if (!user) {
+      throw new Error(AUTH_MESSAGE.USER_NOT_FOUND);
+    }
+
+    return {
+      correctAnswers,
+      totalQuestions,
+      starsEarned,
+      totalStars: user.totalStars,
+      timesPlayed: updatedAttempt.timesPlayed,
+    };
   },
 };
