@@ -4,23 +4,23 @@ import { HTTP_STATUS } from '@constants/global';
 import { successResponse } from '@common/utils/response';
 import { TOPIC_MESSAGE } from './topic.constant';
 import { AuthRequest } from '@common/middlewares/auth.middleware';
+import { getPaginationParameters } from '@common/utils/pagination';
 
 export const TopicController = {
   async getAllTopicsById(req: AuthRequest, res: Response, next: NextFunction) {
     try {
+      const { limit, offset, page, perPage } = getPaginationParameters(req);
       const userId = req.user?.userId as number;
 
-      const limit = parseInt(req.query.limit as string) || 10;
-
-      const cursor = req.query.cursor
-        ? parseInt(req.query.cursor as string)
-        : undefined;
-
-      const topics = await TopicService.getAllTopicsById(userId, limit, cursor);
-
+      const results = await TopicService.getAllTopicsById(userId, {
+        limit,
+        offset,
+        page,
+        perPage,
+      });
       return successResponse(
         res,
-        topics,
+        results,
         TOPIC_MESSAGE.GET_TOPICS_SUCCESS,
         HTTP_STATUS.OK,
       );
