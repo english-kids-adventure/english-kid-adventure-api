@@ -42,4 +42,23 @@ export const VideoRepository = {
       },
     });
   },
+  async unlockVideoTransaction(userId: number, videoId: number, newTotalStars: number) {
+    return await prisma.$transaction([
+      prisma.user.update({
+        where: { id: userId },
+        data: { totalStars: newTotalStars },
+      }),
+      prisma.userVideoProgress.upsert({
+        where: {
+          userId_videoId: { userId, videoId },
+        },
+        update: { isUnlocked: true },
+        create: {
+          userId,
+          videoId,
+          isUnlocked: true,
+        },
+      }),
+    ]);
+  },
 };
