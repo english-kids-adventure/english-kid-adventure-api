@@ -1,6 +1,6 @@
 import { prisma } from '../src/common/config/prisma';
 import bcrypt from 'bcrypt';
-
+import { ASSETS } from '../src/common/constants/cloudinary-assets';
 async function main() {
   const password = await bcrypt.hash('password123', 10);
   const today = new Date();
@@ -427,68 +427,68 @@ async function main() {
       questions: {
         create: [
           {
-            content: 'What animal do we stomp like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.STOMP_QUESTION,
             answers: {
               create: [
-                { content: 'Monkey', isCorrect: false },
-                { content: 'Lion', isCorrect: false },
-                { content: 'Elephant', isCorrect: true },
-                { content: 'Zebra', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.MONKEY, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.LION, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.ELEPHANT, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.ZEBRA, isCorrect: false },
               ],
             },
           },
           {
-            content: 'What animal do we jump like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.JUMP_QUESTION,
             answers: {
               create: [
-                { content: 'Moo', isCorrect: false },
-                { content: 'Kangaroo', isCorrect: true },
-                { content: 'Meow', isCorrect: false },
-                { content: 'Quack', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.PIG, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.KANGAROO, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.CAT, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.DOG, isCorrect: false },
               ],
             },
           },
           {
-            content: 'What animal do we swing like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.SWIM_QUESTION,
             answers: {
               create: [
-                { content: 'Bird', isCorrect: false },
-                { content: 'Fish', isCorrect: false },
-                { content: 'Monkey', isCorrect: true },
-                { content: 'Cat', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.BIRD, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.FISH, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.MONKEY, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.CAT, isCorrect: false },
               ],
             },
           },
           {
-            content: 'What animal do we waddle like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.WADDLE_QUESTION,
             answers: {
               create: [
-                { content: 'Penguin', isCorrect: true },
-                { content: 'Bird', isCorrect: false },
-                { content: 'Pig', isCorrect: false },
-                { content: 'Cat', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.PENGUIN, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.BIRD, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.PIG, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.CAT, isCorrect: false },
               ],
             },
           },
           {
-            content: 'What animal do we slither like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.SLITHER_QUESTION,
             answers: {
               create: [
-                { content: 'Bird', isCorrect: false },
-                { content: 'Fish', isCorrect: false },
-                { content: 'Snake', isCorrect: true },
-                { content: 'Owl', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.BIRD, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.FISH, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.SNAKE, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.CAT, isCorrect: false },
               ],
             },
           },
           {
-            content: 'What animal do we swim like?',
+            mediaUrl: ASSETS.QUIZ.AUDIO.SWIM_QUESTION,
             answers: {
               create: [
-                { content: 'Pig', isCorrect: false },
-                { content: 'Polar bear', isCorrect: true },
-                { content: 'Shark', isCorrect: false },
-                { content: 'Owl', isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.PIG, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.POLARBEAR, isCorrect: true },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.SHARK, isCorrect: false },
+                { mediaUrl: ASSETS.QUIZ.IMAGES.OWL, isCorrect: false },
               ],
             },
           },
