@@ -76,8 +76,8 @@ export const QuizService = {
     };
   },
 
-  async getUserQuizAttempts(userId: number) {
-    const attempts = await QuizRepository.findQuizAtemptByUserId(userId);
+  async getUserQuizAttempts(userId: number, videoId: number) {
+    const attempts = await QuizRepository.findQuizAtemptByVideoId(userId, videoId);
     return attempts;
   },
 };
