@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { TopicService } from './topic.service';
 import { HTTP_STATUS } from '@constants/global';
 import { successResponse } from '@common/utils/response';
@@ -29,10 +29,11 @@ export const TopicController = {
     }
   },
 
-  async getVideosByTopic(req: Request, res: Response, next: NextFunction) {
+  async getVideosByTopic(req: AuthRequest, res: Response, next: NextFunction) {
     try {
       const topicId = parseInt(req.params.id);
-      const videos = await TopicService.getVideosByTopicId(topicId);
+      const userId = parseInt(req.user?.userId as string);
+      const videos = await TopicService.getVideosByTopicId(topicId, userId);
       return successResponse(
         res,
         videos,

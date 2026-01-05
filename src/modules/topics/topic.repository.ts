@@ -31,9 +31,20 @@ export const TopicRepository = {
     return { topics, total };
   },
 
-  async findVideosByTopicId(topicId: number) {
+  async findVideosByTopicId(topicId: number, userId: number) {
     return await prisma.video.findMany({
       where: { topicId },
+      include: {
+        userProgress: {
+          where: {
+            userId,
+          },
+          select: {
+            isUnlocked: true,
+            isCompleted: true,
+          },
+        },
+      },
       orderBy: { orderIndex: 'asc' },
     });
   },

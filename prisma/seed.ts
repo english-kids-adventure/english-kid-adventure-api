@@ -617,7 +617,7 @@ async function main() {
       topicId: topic1.id,
       title: 'Animals Lesson 4 – Farm Animal Fingers',
       url: 'https://www.youtube-nocookie.com/embed/o5kduClgF5Y?controls=1&rel=0&modestbranding=1',
-      level: 'EASY',
+      level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
       orderIndex: 4,

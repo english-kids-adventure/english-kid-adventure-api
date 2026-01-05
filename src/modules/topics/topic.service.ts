@@ -46,13 +46,24 @@ export const TopicService = {
     };
   },
 
-  async getVideosByTopicId(topicId: number) {
+  async getVideosByTopicId(topicId: number, userId: number) {
     const topic = await TopicRepository.findTopicById(topicId);
 
     if (!topic) {
       throw new Error(TOPIC_MESSAGE.TOPIC_NOT_FOUND);
     }
 
-    return await TopicRepository.findVideosByTopicId(topicId);
+    const videos = await TopicRepository.findVideosByTopicId(topicId, userId);
+
+    return videos.map(({ userProgress, ...videoData }) => {
+      const dbIsUnlocked = userProgress[0]?.isUnlocked ?? false;
+      const dbIsCompleted = userProgress[0]?.isCompleted ?? false;
+
+      return {
+        ...videoData,
+        isCompleted: dbIsCompleted,
+        isUnlocked: videoData.level === 'EASY' ? true : dbIsUnlocked,
+      };
+    });
   },
 };
