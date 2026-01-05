@@ -14,7 +14,6 @@ const sslConfig = isDevelopment
     rejectUnauthorized: true,
     ca: fs.readFileSync(caPath).toString(),
   };
-
 const pool = new pg.Pool({
   user: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,

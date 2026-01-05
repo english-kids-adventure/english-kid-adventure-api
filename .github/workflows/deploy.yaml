@@ -2,7 +2,7 @@ name: Build and Deploy to Render
 
 on:
   push:
-    branches: [ feature/VLIST-100-CI/CD ]
+    branches: [ main, release/* ]
 
 jobs:
   build-and-deploy:

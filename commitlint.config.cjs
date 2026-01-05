@@ -21,7 +21,7 @@ module.exports = {
     },
   ],
   rules: {
-    'type-enum': [2, 'always', ['feat', 'fix', 'chore', 'docs', 'refactor', 'style', 'test']],
+    'type-enum': [2, 'always', ['feat', 'fix', 'chore', 'docs', 'refactor', 'style', 'test', 'release']],
     'scope-empty': [2, 'never'],
     'scope-pattern': [2, 'always'], 
     'header-max-length': [2, 'always', 100],
