@@ -57,9 +57,11 @@ export const TopicService = {
 
     return videos.map(({ userProgress, ...videoData }) => {
       const dbIsUnlocked = userProgress[0]?.isUnlocked ?? false;
+      const dbIsCompleted = userProgress[0]?.isCompleted ?? false;
 
       return {
         ...videoData,
+        isCompleted: dbIsCompleted,
         isUnlocked: videoData.level === 'EASY' ? true : dbIsUnlocked,
       };
     });

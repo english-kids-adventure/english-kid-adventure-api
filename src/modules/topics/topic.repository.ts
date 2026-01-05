@@ -41,6 +41,7 @@ export const TopicRepository = {
           },
           select: {
             isUnlocked: true,
+            isCompleted: true,
           },
         },
       },
