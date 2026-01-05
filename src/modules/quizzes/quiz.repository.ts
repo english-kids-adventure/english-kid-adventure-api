@@ -91,9 +91,9 @@ export const QuizRepository = {
     });
   },
 
-  async findQuizAtemptByUserId(userId: number) {
+  async findQuizAtemptByVideoId(userId: number, videoId: number) {
     return await prisma.userQuizAttempt.findMany({
-      where: { userId },
+      where: { userId, videoId },
     });
   },
 };

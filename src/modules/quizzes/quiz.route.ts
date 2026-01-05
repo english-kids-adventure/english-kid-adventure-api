@@ -11,7 +11,7 @@ quizRoutes.get(
 );
 
 quizRoutes.get(
-  '/attempts',
+  '/attempts/:videoId',
   authenticateJWT,
   QuizController.getUserQuizAttempts,
 );
