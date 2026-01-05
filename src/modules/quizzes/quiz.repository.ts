@@ -90,4 +90,10 @@ export const QuizRepository = {
       },
     });
   },
+
+  async findQuizAtemptByUserId(userId: number) {
+    return await prisma.userQuizAttempt.findMany({
+      where: { userId },
+    });
+  },
 };

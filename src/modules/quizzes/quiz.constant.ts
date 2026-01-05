@@ -6,6 +6,7 @@ export const QUIZ_MESSAGE = {
   QUIZ_SUBMITTED_SUCCESS: 'Quiz submitted successfully',
   INVALID_SUBMIT_DATA: 'correctAnswers and totalQuestions are required',
   OVER_LIMIT_TODAY: 'Over limit for today',
+  GET_QUIZ_ATTEMPTS_SUCCESS: 'Get user quiz attempts successfully',
 };
 
 export const getTodayTime = () => {
