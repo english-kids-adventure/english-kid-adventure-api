@@ -21,7 +21,7 @@ export const UserRepository = {
     });
   },
 
-  async updateUserStats(userId: number, data: any) {
+  async updateUserStats(userId: number, data: UserUpdateData) {
     return await prisma.user.update({
       where: { id: userId },
       data,
@@ -29,12 +29,8 @@ export const UserRepository = {
   },
 
   async createActivityLog(userId: number, date: Date) {
-    return await prisma.userActivityLog.upsert({
-      where: {
-        userId_activityDate: { userId, activityDate: date },
-      },
-      update: {},
-      create: { userId, activityDate: date },
+    return await prisma.userActivityLog.create({
+      data: { userId, activityDate: date },
     });
   },
 

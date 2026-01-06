@@ -1,7 +1,6 @@
-// src/modules/users/user.service.ts
 import { UserRepository } from './user.repository';
+import { AuthRepository } from '@modules/auth/auth.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
 import { USER_MESSAGE } from './user.constant';
 import {
   getStartOfTodayUTC,
@@ -11,10 +10,12 @@ import {
 } from '@utils/date';
 
 export const UserService = {
-  async getUserProfile(userPayload: JwtPayload | undefined) {
-    if (!userPayload) throw new Error(AUTH_MESSAGE.UNAUTHORIZED);
-
+  async getUserProfile(userPayload: JwtPayload) {
     const userId = Number(userPayload.userId);
+    const userExists = await AuthRepository.findById(userId);
+    if (!userExists) {
+      throw new Error(USER_MESSAGE.USER_NOT_FOUND);
+    }
     let user = await UserRepository.getProfile(userId);
     if (!user) throw new Error(USER_MESSAGE.USER_NOT_FOUND);
 
@@ -46,21 +47,23 @@ export const UserService = {
         UserRepository.addWeeklyXp(userId, startOfWeek, 10),
       ]);
       user = await UserRepository.getProfile(userId);
+      if (!user) {
+        throw new Error(USER_MESSAGE.USER_NOT_FOUND);
+      }
     }
-    const weeklyXp = user!.weeklyStats[0]?.weeklyXp || 0;
-    const completedDays = user!.activityLogs.map((log) =>
+    const weeklyXp = user.weeklyStats[0]?.weeklyXp || 0;
+    const completedDays = user.activityLogs.map((log) =>
       new Date(log.activityDate).getUTCDay(),
     );
-
     return {
-      user_id: user!.id,
-      name: user!.name,
-      avatar_url: user!.avatarUrl,
-      total_xp: user!.totalXp,
+      user_id: user.id,
+      name: user.name,
+      avatar_url: user.avatarUrl,
+      total_xp: user.totalXp,
       weekly_xp: weeklyXp,
-      total_stars: user!.totalStars,
-      current_streak: user!.currentStreak,
-      longest_streak: user!.longestStreak,
+      total_stars: user.totalStars,
+      current_streak: user.currentStreak,
+      longest_streak: user.longestStreak,
       completed_days: completedDays,
     };
   },
