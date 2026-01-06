@@ -44,4 +44,20 @@ export const QuizController = {
       next(error);
     }
   },
+
+  async getUserQuizAttempts(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user?.userId as number;
+      const videoId = parseInt(req.params.videoId as string);
+      const attempts = await QuizService.getUserQuizAttempts(userId, videoId);
+      return successResponse(
+        res,
+        attempts,
+        QUIZ_MESSAGE.GET_QUIZ_ATTEMPTS_SUCCESS,
+        HTTP_STATUS.OK,
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
 };

@@ -75,4 +75,9 @@ export const QuizService = {
       timesPlayed: updatedAttempt.timesPlayed,
     };
   },
+
+  async getUserQuizAttempts(userId: number, videoId: number) {
+    const attempts = await QuizRepository.findQuizAtemptByVideoId(userId, videoId);
+    return attempts;
+  },
 };

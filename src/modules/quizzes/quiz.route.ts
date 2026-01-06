@@ -10,6 +10,12 @@ quizRoutes.get(
   QuizController.getQuizByVideoId,
 );
 
+quizRoutes.get(
+  '/attempts/:videoId',
+  authenticateJWT,
+  QuizController.getUserQuizAttempts,
+);
+
 quizRoutes.post(
   '/video/:videoId/submit',
   authenticateJWT,
