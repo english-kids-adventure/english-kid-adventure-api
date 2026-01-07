@@ -39,12 +39,9 @@ export const AuthService = {
       refreshOptions,
     );
 
-    await redis.set(
-      `refresh_token:${payload.userId}`,
-      refreshToken,
-      'EX',
-      7 * 24 * 60 * 60,
-    );
+    await redis.set(`refresh_token:${payload.userId}`, refreshToken, {
+      EX: 7 * 24 * 60 * 60,
+    });
 
     return { accessToken, refreshToken };
   },
