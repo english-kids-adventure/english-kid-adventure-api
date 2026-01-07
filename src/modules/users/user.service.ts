@@ -1,5 +1,4 @@
 import { UserRepository } from './user.repository';
-import { AuthRepository } from '@modules/auth/auth.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
 import { USER_MESSAGE } from './user.constant';
 import {
@@ -12,10 +11,6 @@ import {
 export const UserService = {
   async getUserProfile(userPayload: JwtPayload) {
     const userId = Number(userPayload.userId);
-    const userExists = await AuthRepository.findById(userId);
-    if (!userExists) {
-      throw new Error(USER_MESSAGE.USER_NOT_FOUND);
-    }
     let user = await UserRepository.getProfile(userId);
     if (!user) throw new Error(USER_MESSAGE.USER_NOT_FOUND);
 

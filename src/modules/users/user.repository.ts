@@ -29,8 +29,12 @@ export const UserRepository = {
   },
 
   async createActivityLog(userId: number, date: Date) {
-    return await prisma.userActivityLog.create({
-      data: { userId, activityDate: date },
+    return await prisma.userActivityLog.upsert({
+      where: {
+        userId_activityDate: { userId, activityDate: date },
+      },
+      update: {},
+      create: { userId, activityDate: date },
     });
   },
 
