@@ -47,4 +47,42 @@ export const UserRepository = {
       create: { userId, weekStartDate: startOfWeek, weeklyXp: xpToAdd },
     });
   },
+  async getWeeklyLeaderboard(limit: number = 10) {
+    const startOfWeek = getStartOfCurrentWeekUTC();
+
+    return await prisma.userWeeklyStat.findMany({
+      where: {
+        weekStartDate: startOfWeek,
+      },
+      orderBy: {
+        weeklyXp: 'desc',
+      },
+      take: limit,
+      include: {
+        user: {
+          select: {
+            name: true,
+            avatarUrl: true,
+          },
+        },
+      },
+    });
+  },
+  async getUserRankAndXp(userId: number, startOfWeek: Date) {
+    const userStat = await prisma.userWeeklyStat.findUnique({
+      where: { userId_weekStartDate: { userId, weekStartDate: startOfWeek } },
+    });
+
+    if (!userStat) return { rank: 0, weeklyXp: 0 };
+    const countHigher = await prisma.userWeeklyStat.count({
+      where: {
+        weekStartDate: startOfWeek,
+        weeklyXp: { gt: userStat.weeklyXp },
+      },
+    });
+    return {
+      rank: countHigher + 1,
+      weeklyXp: userStat.weeklyXp,
+    };
+  },
 };

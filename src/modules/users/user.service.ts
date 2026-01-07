@@ -1,6 +1,6 @@
 import { UserRepository } from './user.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { USER_MESSAGE } from './user.constant';
+import { LEADERBOARD_REWARDS, USER_MESSAGE } from './user.constant';
 import {
   getStartOfTodayUTC,
   getStartOfCurrentWeekUTC,
@@ -16,7 +16,9 @@ export const UserService = {
 
     const today = getStartOfTodayUTC();
     const todayStr = formatDateUTC(today);
-    const lastLoginStr = user.lastLoginAt ? formatDateUTC(new Date(user.lastLoginAt)) : null;
+    const lastLoginStr = user.lastLoginAt
+      ? formatDateUTC(new Date(user.lastLoginAt))
+      : null;
     if (!lastLoginStr || todayStr > lastLoginStr) {
       let newStreak = 1;
 
@@ -60,6 +62,41 @@ export const UserService = {
       current_streak: user.currentStreak,
       longest_streak: user.longestStreak,
       completed_days: completedDays,
+    };
+  },
+  async getWeeklyLeaderboard(currentUserId: number) {
+    const startOfWeek = getStartOfCurrentWeekUTC();
+    const [topStats, currentUserStat] = await Promise.all([
+      UserRepository.getWeeklyLeaderboard(10),
+      UserRepository.getUserRankAndXp(currentUserId, startOfWeek),
+    ]);
+    const top10 = topStats.map((item, index) => {
+      const rank = index + 1;
+      const rewardStars =
+        LEADERBOARD_REWARDS[rank as keyof typeof LEADERBOARD_REWARDS] || 0;
+
+      return {
+        rank,
+        user_id: item.userId,
+        name: item.user.name,
+        avatar_url: item.user.avatarUrl,
+        weekly_xp: item.weeklyXp,
+        reward_stars: rewardStars,
+        is_me: item.userId === currentUserId,
+      };
+    });
+
+    return {
+      top_10: top10,
+      my_rank: {
+        rank: currentUserStat.rank,
+        weekly_xp: currentUserStat.weeklyXp,
+        reward_stars:
+          LEADERBOARD_REWARDS[
+            currentUserStat.rank as keyof typeof LEADERBOARD_REWARDS
+          ] || 0,
+      },
+      reward_rules: LEADERBOARD_REWARDS,
     };
   },
 };
