@@ -16,7 +16,9 @@ export const UserService = {
 
     const today = getStartOfTodayUTC();
     const todayStr = formatDateUTC(today);
-    const lastLoginStr = user.lastLoginAt ? formatDateUTC(new Date(user.lastLoginAt)) : null;
+    const lastLoginStr = user.lastLoginAt
+      ? formatDateUTC(new Date(user.lastLoginAt))
+      : null;
     if (!lastLoginStr || todayStr > lastLoginStr) {
       let newStreak = 1;
 
@@ -39,6 +41,7 @@ export const UserService = {
           streakUpdatedAt: today,
         }),
         UserRepository.createActivityLog(userId, today),
+
         UserRepository.addWeeklyXp(userId, startOfWeek, 10),
       ]);
       user = await UserRepository.getProfile(userId);

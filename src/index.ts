@@ -10,6 +10,7 @@ import topicRoutes from '@modules/topics/topic.route';
 import userRoutes from '@modules/users/user.route';
 import quizRoutes from '@modules/quizzes/quiz.route';
 import videoRoutes from '@modules/video/video.route';
+import missionRoutes from '@modules/mission/mission.route';
 const app: Express = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -30,6 +31,7 @@ app.use('/api/v1/topics', topicRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/quizzes', quizRoutes);
 app.use('/api/v1/videos', videoRoutes);
+app.use('/api/v1/missions', missionRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use(errorHandler);
 app.listen(PORT, () => {
