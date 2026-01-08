@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import pg from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../../../generated/prisma';
+import { PrismaClient } from '../../../generated/prisma/client';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 const caPath = path.resolve(process.cwd(), './src/common/config/ca.pem');

@@ -23,4 +23,22 @@ export const UserController = {
       next(error);
     }
   },
+  async getLeaderboard(req: AuthRequest, res: Response, next: NextFunction) {
+    try {
+      if (!req.user) {
+        throw new Error(AUTH_MESSAGE.UNAUTHORIZED);
+      }
+      const userId = Number(req.user.userId);
+      const leaderboard = await UserService.getWeeklyLeaderboard(userId);
+
+      return successResponse(
+        res,
+        leaderboard,
+        USER_MESSAGE.GET_WEEKLY_SUCCESS,
+        HTTP_STATUS.OK,
+      );
+    } catch (error) {
+      next(error);
+    }
+  },
 };

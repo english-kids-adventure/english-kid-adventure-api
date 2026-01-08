@@ -1,6 +1,6 @@
 import { UserRepository } from './user.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { USER_MESSAGE } from './user.constant';
+import { LEADERBOARD_CONFIG, LEADERBOARD_REWARDS, USER_MESSAGE } from './user.constant';
 import {
   getStartOfTodayUTC,
   getStartOfCurrentWeekUTC,
@@ -63,6 +63,40 @@ export const UserService = {
       current_streak: user.currentStreak,
       longest_streak: user.longestStreak,
       completed_days: completedDays,
+    };
+  },
+  async getWeeklyLeaderboard(currentUserId: number) {
+    const startOfWeek = getStartOfCurrentWeekUTC();
+    const [topStats, currentUserStat] = await Promise.all([
+      UserRepository.getWeeklyLeaderboard(LEADERBOARD_CONFIG.TOP_LIMIT),
+      UserRepository.getUserRankAndXp(currentUserId, startOfWeek),
+    ]);
+    const top10 = topStats.map((item, index) => {
+      const rank = index + 1;
+      const rewardStars = LEADERBOARD_REWARDS[currentUserStat.rank] || 0;
+      return {
+        rank,
+        user_id: item.userId,
+        name: item.user.name,
+        avatar_url: item.user.avatarUrl,
+        weekly_xp: item.weeklyXp,
+        reward_stars: rewardStars,
+        is_me: item.userId === currentUserId,
+      };
+    });
+
+    return {
+      top_10: top10,
+      my_rank: {
+        rank: currentUserStat.rank,
+        weekly_xp: currentUserStat.weeklyXp,
+        reward_stars: LEADERBOARD_REWARDS[currentUserStat.rank] || 0,
+      },
+      reward_rules: {
+        '1': LEADERBOARD_REWARDS[1],
+        '2': LEADERBOARD_REWARDS[2],
+        '3': LEADERBOARD_REWARDS[3],
+      },
     };
   },
 };
