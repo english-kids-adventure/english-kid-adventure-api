@@ -1,6 +1,6 @@
 import { UserRepository } from './user.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { LEADERBOARD_REWARDS, USER_MESSAGE } from './user.constant';
+import { LEADERBOARD_CONFIG, LEADERBOARD_REWARDS, USER_MESSAGE } from './user.constant';
 import {
   getStartOfTodayUTC,
   getStartOfCurrentWeekUTC,
@@ -68,7 +68,7 @@ export const UserService = {
   async getWeeklyLeaderboard(currentUserId: number) {
     const startOfWeek = getStartOfCurrentWeekUTC();
     const [topStats, currentUserStat] = await Promise.all([
-      UserRepository.getWeeklyLeaderboard(10),
+      UserRepository.getWeeklyLeaderboard(LEADERBOARD_CONFIG.TOP_LIMIT),
       UserRepository.getUserRankAndXp(currentUserId, startOfWeek),
     ]);
     const top10 = topStats.map((item, index) => {

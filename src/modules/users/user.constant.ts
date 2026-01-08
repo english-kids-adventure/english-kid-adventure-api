@@ -4,3 +4,6 @@ export const USER_MESSAGE = {
   GET_WEEKLY_SUCCESS:'Get weekly leaderboard successfully',
 };
 export const LEADERBOARD_REWARDS = [0, 50, 30, 20];
+export const LEADERBOARD_CONFIG = {
+  TOP_LIMIT: 10,
+};

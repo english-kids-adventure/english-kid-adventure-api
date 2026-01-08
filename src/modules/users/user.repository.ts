@@ -47,7 +47,7 @@ export const UserRepository = {
       create: { userId, weekStartDate: startOfWeek, weeklyXp: xpToAdd },
     });
   },
-  async getWeeklyLeaderboard(limit: number = 10) {
+  async getWeeklyLeaderboard(limit: number) {
     const startOfWeek = getStartOfCurrentWeekUTC();
 
     return await prisma.userWeeklyStat.findMany({
