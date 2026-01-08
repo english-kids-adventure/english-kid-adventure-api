@@ -1335,8 +1335,8 @@ async function main() {
   const mission1 = await prisma.mission.create({
     data: {
       code: 'D1',
-      name: 'Daily Login',
-      description: 'Log in today',
+      name: 'Daily Check-in',
+      description: 'Log in to the app to keep your streak alive!',
       type: 'DAILY',
       rewardXp: 10,
     },
@@ -1344,84 +1344,60 @@ async function main() {
   const mission2 = await prisma.mission.create({
     data: {
       code: 'D2',
-      name: 'Watch 1',
-      description: 'Watch one video',
+      name: 'Video Explorer',
+      description: 'Watch at least one video today to learn something new.',
       type: 'DAILY',
       rewardXp: 20,
-    },
-  });
-  const mission3 = await prisma.mission.create({
-    data: {
-      code: 'D3',
-      name: 'New Video',
-      description: 'Complete a new lesson',
-      type: 'DAILY',
-      rewardXp: 50,
     },
   });
   const mission4 = await prisma.mission.create({
     data: {
       code: 'D4',
-      name: 'Star Earner',
-      description: 'Get 10 stars',
+      name: 'Star Collector',
+      description: 'Earn 10 or more stars within a single day.',
       type: 'DAILY',
       rewardXp: 100,
-    },
-  });
-  const mission5 = await prisma.mission.create({
-    data: {
-      code: 'D5',
-      name: 'Quiz King',
-      description: 'Perfect Quiz score',
-      type: 'DAILY',
-      rewardXp: 150,
-    },
-  });
-  const mission6 = await prisma.mission.create({
-    data: {
-      code: 'D6',
-      name: 'Fast Learner',
-      description: 'Finish video in 5 min',
-      type: 'DAILY',
-      rewardXp: 30,
-    },
-  });
-  const mission7 = await prisma.mission.create({
-    data: {
-      code: 'D7',
-      name: 'Avatar',
-      description: 'Change your avatar',
-      type: 'DAILY',
-      rewardXp: 20,
     },
   });
   const mission8 = await prisma.mission.create({
     data: {
       code: 'D8',
       name: 'Explorer',
-      description: 'Open a medium video',
+      description: 'Unlock a fresh video lesson.',
       type: 'DAILY',
       rewardXp: 40,
     },
   });
-  const mission9 = await prisma.mission.create({
-    data: {
-      code: 'W1',
-      name: 'Top 10',
-      description: 'Be in Top 10',
-      type: 'WEEKLY',
-      rewardXp: 300,
-      rewardStars: 10,
-    },
-  });
   const mission10 = await prisma.mission.create({
     data: {
-      code: 'W2',
-      name: 'Top 3',
-      description: 'Be in Top 3',
+      code: 'W1',
+      name: 'Weekly Champion',
+      description: 'Reach the #1 spot on the leaderboard this week.',
       type: 'WEEKLY',
-      rewardXp: 500,
+      rewardXp: 0,
+      rewardStars: 50,
+    },
+  });
+
+  const mission11 = await prisma.mission.create({
+    data: {
+      code: 'W2',
+      name: 'Weekly Runner-up',
+      description: 'Secure the #2 position on the leaderboard.',
+      type: 'WEEKLY',
+      rewardXp: 0,
       rewardStars: 30,
+    },
+  });
+
+  const mission12 = await prisma.mission.create({
+    data: {
+      code: 'W3',
+      name: 'Weekly Bronze Medalist',
+      description: 'Finish in the Top 3 on the leaderboard.',
+      type: 'WEEKLY',
+      rewardXp: 0,
+      rewardStars: 20,
     },
   });
 
@@ -1447,7 +1423,7 @@ async function main() {
   await prisma.userMissionProgress.create({
     data: {
       userId: user3.id,
-      missionId: mission3.id,
+      missionId: mission10.id,
       currentCount: 1,
       isClaimed: false,
       resetDate: today,
@@ -1465,7 +1441,7 @@ async function main() {
   await prisma.userMissionProgress.create({
     data: {
       userId: user5.id,
-      missionId: mission5.id,
+      missionId: mission11.id,
       currentCount: 1,
       isClaimed: false,
       resetDate: today,
@@ -1474,16 +1450,7 @@ async function main() {
   await prisma.userMissionProgress.create({
     data: {
       userId: user6.id,
-      missionId: mission6.id,
-      currentCount: 1,
-      isClaimed: false,
-      resetDate: today,
-    },
-  });
-  await prisma.userMissionProgress.create({
-    data: {
-      userId: user7.id,
-      missionId: mission7.id,
+      missionId: mission12.id,
       currentCount: 1,
       isClaimed: false,
       resetDate: today,
@@ -1493,24 +1460,6 @@ async function main() {
     data: {
       userId: user8.id,
       missionId: mission8.id,
-      currentCount: 1,
-      isClaimed: false,
-      resetDate: today,
-    },
-  });
-  await prisma.userMissionProgress.create({
-    data: {
-      userId: user9.id,
-      missionId: mission9.id,
-      currentCount: 1,
-      isClaimed: false,
-      resetDate: today,
-    },
-  });
-  await prisma.userMissionProgress.create({
-    data: {
-      userId: user10.id,
-      missionId: mission10.id,
       currentCount: 1,
       isClaimed: false,
       resetDate: today,

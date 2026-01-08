@@ -4,6 +4,9 @@ import { AUTH_MESSAGE } from './auth.constant';
 import { AuthRepository } from './auth.repository';
 import { LoginDTO, RegisterDTO, TokenPayload } from './auth.type';
 import bcrypt from 'bcrypt';
+import { MissionService } from '@modules/mission/mission.service';
+import { MISSION_CODE } from '@modules/mission/mission.constant';
+
 export const AuthService = {
   async register(dto: RegisterDTO) {
     const isUserExists = await AuthRepository.findByEmail(dto.email);
@@ -53,6 +56,8 @@ export const AuthService = {
 
     const isMatch = await bcrypt.compare(dto.password, user.password);
     if (!isMatch) throw new Error(AUTH_MESSAGE.INVALID_CREDENTIALS);
+
+    await MissionService.updateMissionProgress(user.id, MISSION_CODE.LOG_IN, 1, true);
 
     const tokens = await this.generateTokens({
       userId: user.id,

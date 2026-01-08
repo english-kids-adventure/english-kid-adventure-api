@@ -2,12 +2,14 @@ import { AuthRepository } from '@modules/auth/auth.repository';
 import { VIDEO_MESSAGE } from './video.constant';
 import { VideoRepository } from './video.repository';
 import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
+import { MissionService } from '@modules/mission/mission.service';
+import { MISSION_CODE } from '@modules/mission/mission.constant';
 
 export const VideoService = {
   async completeVideoForUser(userId: number, videoId: number) {
     const video = await VideoRepository.getVideoById(videoId);
     if (!video) {
-      throw new Error('Video not found');
+      throw new Error(VIDEO_MESSAGE.VIDEO_NOT_FOUND);
     }
 
     const progress = await VideoRepository.getUserVideoProgress(
@@ -17,6 +19,11 @@ export const VideoService = {
     if (!progress?.isCompleted) {
       await VideoRepository.updateVideoProgress(userId, videoId);
     }
+    await MissionService.updateMissionProgress(
+      userId,
+      MISSION_CODE.WATCH_VIDEO,
+      1,
+    );
     const xpReward = await VideoRepository.awardUserXp(userId, video.xpReward);
     return xpReward;
   },
@@ -25,7 +32,10 @@ export const VideoService = {
     if (!user) throw new Error(AUTH_MESSAGE.USER_NOT_FOUND);
     const video = await VideoRepository.getVideoById(videoId);
     if (!video) throw new Error(VIDEO_MESSAGE.VIDEO_NOT_FOUND);
-    const progress = await VideoRepository.getUserVideoProgress(userId, videoId);
+    const progress = await VideoRepository.getUserVideoProgress(
+      userId,
+      videoId,
+    );
     if (progress?.isUnlocked) {
       throw new Error(VIDEO_MESSAGE.ALREADY_UNLOCKED);
     }
@@ -33,11 +43,19 @@ export const VideoService = {
       throw new Error(VIDEO_MESSAGE.INSUFFICIENT_STARS);
     }
     const newTotalStars = user.totalStars - video.unlockCost;
-    const [updatedUser, newProgress] = await VideoRepository.unlockVideoTransaction(
+    const [updatedUser, newProgress] =
+      await VideoRepository.unlockVideoTransaction(
+        userId,
+        videoId,
+        newTotalStars,
+      );
+
+    await MissionService.updateMissionProgress(
       userId,
-      videoId,
-      newTotalStars,
+      MISSION_CODE.UNLOCK_VIDEO,
+      1,
     );
+
     return {
       remainingStars: updatedUser.totalStars,
       isUnlocked: newProgress.isUnlocked,

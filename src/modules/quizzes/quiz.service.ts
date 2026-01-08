@@ -1,6 +1,8 @@
 import { QuizRepository } from './quiz.repository';
 import { QUIZ_MESSAGE } from './quiz.constant';
 import { AUTH_MESSAGE } from '@modules/auth/auth.constant';
+import { MissionService } from '@modules/mission/mission.service';
+import { MISSION_CODE } from '@modules/mission/mission.constant';
 
 export const QuizService = {
   async getQuizByVideoId(videoId: number) {
@@ -55,6 +57,11 @@ export const QuizService = {
     const starsEarned = Math.round(percentage * 5);
 
     await QuizRepository.incrementUserTotalStars(userId, starsEarned);
+    await MissionService.updateMissionProgress(
+      userId,
+      MISSION_CODE.EARN_STARS,
+      starsEarned,
+    );
 
     const updatedAttempt = await QuizRepository.upsertQuizAttempt(
       userId,
@@ -77,7 +84,11 @@ export const QuizService = {
   },
 
   async getUserQuizAttempts(userId: number, videoId: number) {
-    const attempts = await QuizRepository.findQuizAtemptByVideoId(userId, videoId);
+    const attempts = await QuizRepository.findQuizAtemptByVideoId(
+      userId,
+      videoId,
+    );
     return attempts;
   },
 };
+
