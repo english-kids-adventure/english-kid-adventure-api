@@ -3,6 +3,7 @@ export interface MissionResponseDto {
   code: string;
   name: string;
   description: string;
+  rank?:number;
   type: string;
   targetCount: number;
   rewardXp: number;

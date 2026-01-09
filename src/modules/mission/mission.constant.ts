@@ -11,4 +11,7 @@ export const MISSION_CODE = {
   EARN_STARS: 'D4',
   UNLOCK_VIDEO: 'D8',
   LOG_IN: 'D1',
+  WEEKLY_TOP_1: 'W1',
+  WEEKLY_TOP_2: 'W2',
+  WEEKLY_TOP_3: 'W3',
 };
