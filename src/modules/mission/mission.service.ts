@@ -2,7 +2,7 @@ import { prisma } from '@config/prisma';
 import { JwtPayload } from '@middlewares/auth.middleware';
 import { formatDateUTC, getStartOfCurrentWeekUTC, getStartOfTodayUTC } from '@utils/date';
 import { MissionRepository } from './mission.repository';
-import { MISSION_MESSAGE } from './mission.constant';
+import { MISSION_MESSAGE, WEEKLY_MISSION_RANKS } from './mission.constant';
 import { MissionResponseDto, ClaimMissionResponseDto } from './mission.type';
 
 export const MissionService = {
@@ -17,13 +17,10 @@ export const MissionService = {
     ]);
     const allProgress = [...dailyProgress, ...weeklyProgress];
     const progressMap = new Map(allProgress.map((item) => [item.missionId, item]));
-    const rankMap: Record<string, number> = { 'W1': 1, 'W2': 2, 'W3': 3 };
+    const rankMap = WEEKLY_MISSION_RANKS;
 
-    return missions.flatMap((mission) => {
+    return missions.map((mission) => {
       const userProgress = progressMap.get(mission.id);
-      if (mission.type === 'WEEKLY' && !userProgress) {
-        return [];
-      }
       const currentCount = userProgress?.currentCount ?? 0;
       const isClaimed = userProgress?.isClaimed ?? false;
       return {
