@@ -73,7 +73,7 @@ export const UserService = {
     ]);
     const top10 = topStats.map((item, index) => {
       const rank = index + 1;
-      const rewardStars = LEADERBOARD_REWARDS[currentUserStat.rank] || 0;
+      const rewardStars = LEADERBOARD_REWARDS[rank as keyof typeof LEADERBOARD_REWARDS] || 0;
       return {
         rank,
         user_id: item.userId,
@@ -90,13 +90,9 @@ export const UserService = {
       my_rank: {
         rank: currentUserStat.rank,
         weekly_xp: currentUserStat.weeklyXp,
-        reward_stars: LEADERBOARD_REWARDS[currentUserStat.rank] || 0,
+        reward_stars: LEADERBOARD_REWARDS[currentUserStat.rank as keyof typeof LEADERBOARD_REWARDS] || 0,
       },
-      reward_rules: {
-        '1': LEADERBOARD_REWARDS[1],
-        '2': LEADERBOARD_REWARDS[2],
-        '3': LEADERBOARD_REWARDS[3],
-      },
+      reward_rules: LEADERBOARD_REWARDS,
     };
   },
 };
