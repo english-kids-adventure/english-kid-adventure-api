@@ -1357,6 +1357,7 @@ async function main() {
       description: 'Earn 10 or more stars within a single day.',
       type: 'DAILY',
       rewardXp: 100,
+      targetCount: 10,
     },
   });
   const mission8 = await prisma.mission.create({

@@ -7,3 +7,8 @@ export const LEADERBOARD_REWARDS = [0, 50, 30, 20];
 export const LEADERBOARD_CONFIG = {
   TOP_LIMIT: 10,
 };
+
+export const CRON_SCHEDULE = {
+  WEEKLY_REWARD_CLAIM: '55 23 * * 0',
+  WEEKLY_LEADERBOARD_FINALIZATION: '59 23 * * 0',
+};

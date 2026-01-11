@@ -1,27 +1,28 @@
 import { prisma } from '@config/prisma';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { formatDateUTC, getStartOfTodayUTC } from '@utils/date';
+import { formatDateUTC, getStartOfCurrentWeekUTC, getStartOfTodayUTC } from '@utils/date';
 import { MissionRepository } from './mission.repository';
-import { MISSION_MESSAGE } from './mission.constant';
+import { MISSION_MESSAGE, WEEKLY_MISSION_RANKS } from './mission.constant';
 import { MissionResponseDto, ClaimMissionResponseDto } from './mission.type';
 
 export const MissionService = {
   async getTodayMissions(user: JwtPayload): Promise<MissionResponseDto[]> {
     const userId = Number(user.userId);
     const today = getStartOfTodayUTC();
-
-    const [missions, progress] = await Promise.all([
+    const startOfWeek = getStartOfCurrentWeekUTC();
+    const [missions, dailyProgress, weeklyProgress] = await Promise.all([
       MissionRepository.getAllMissions(),
       MissionRepository.getUserProgressByDate(userId, today),
+      MissionRepository.getUserProgressByDate(userId, startOfWeek),
     ]);
-
-    const progressMap = new Map(progress.map((item) => [item.missionId, item]));
+    const allProgress = [...dailyProgress, ...weeklyProgress];
+    const progressMap = new Map(allProgress.map((item) => [item.missionId, item]));
+    const rankMap = WEEKLY_MISSION_RANKS;
 
     return missions.map((mission) => {
       const userProgress = progressMap.get(mission.id);
       const currentCount = userProgress?.currentCount ?? 0;
       const isClaimed = userProgress?.isClaimed ?? false;
-
       return {
         id: mission.id,
         code: mission.code,
@@ -34,7 +35,8 @@ export const MissionService = {
         currentCount,
         isClaimed,
         isCompleted: currentCount >= mission.targetCount,
-        resetDate: formatDateUTC(today),
+        resetDate: formatDateUTC(mission.type === 'DAILY' ? today : startOfWeek),
+        rank: rankMap[mission.code],
       };
     });
   },
@@ -69,11 +71,12 @@ export const MissionService = {
     if (!mission) {
       throw new Error(MISSION_MESSAGE.MISSION_NOT_FOUND);
     }
+    const targetDate = mission.type === 'WEEKLY' ? getStartOfCurrentWeekUTC() : today;
 
     const progress = await MissionRepository.getUserMissionProgress(
       userId,
       missionId,
-      today,
+      targetDate,
     );
 
     if (!progress || progress.currentCount < mission.targetCount) {
@@ -90,7 +93,7 @@ export const MissionService = {
           userId_missionId_resetDate: {
             userId,
             missionId,
-            resetDate: today,
+            resetDate: targetDate,
           },
         },
         data: { isClaimed: true },
