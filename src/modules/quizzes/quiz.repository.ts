@@ -1,5 +1,5 @@
 import { prisma } from '@config/prisma';
-import { getTodayTime } from './quiz.constant';
+import { getStartOfTodayVN } from '@utils/date';
 
 export const QuizRepository = {
   async findQuizByVideoId(videoId: number) {
@@ -16,7 +16,7 @@ export const QuizRepository = {
   },
 
   async getToDayAttempt(userId: number, videoId: number) {
-    const today = getTodayTime();
+    const today = getStartOfTodayVN();
 
     return await prisma.userQuizAttempt.findUnique({
       where: {
@@ -43,7 +43,7 @@ export const QuizRepository = {
     videoId: number,
     starsToAward: number,
   ) {
-    const today = getTodayTime();
+    const today = getStartOfTodayVN();
 
     return await prisma.userQuizAttempt.upsert({
       where: {
@@ -71,8 +71,7 @@ export const QuizRepository = {
   },
 
   async incrementAttemptOnly(userId: number, videoId: number) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = getStartOfTodayVN();
 
     return await prisma.userQuizAttempt.upsert({
       where: {

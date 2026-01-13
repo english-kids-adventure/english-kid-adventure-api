@@ -1,9 +1,9 @@
 import { prisma } from '@config/prisma';
-import { getStartOfCurrentWeekUTC } from '@utils/date';
+import { getStartOfCurrentWeekVN } from '@utils/date';
 
 export const UserRepository = {
   async getProfile(userId: number) {
-    const startOfWeek = getStartOfCurrentWeekUTC();
+    const startOfWeek = getStartOfCurrentWeekVN();
 
     return await prisma.user.findUnique({
       where: { id: userId },
@@ -48,8 +48,7 @@ export const UserRepository = {
     });
   },
   async getWeeklyLeaderboard(limit: number) {
-    const startOfWeek = getStartOfCurrentWeekUTC();
-
+    const startOfWeek = getStartOfCurrentWeekVN();
     return await prisma.userWeeklyStat.findMany({
       where: {
         weekStartDate: startOfWeek,
