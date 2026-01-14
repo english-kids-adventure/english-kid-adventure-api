@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import { prisma } from '@config/prisma';
 import { getStartOfCurrentWeekVN } from '@utils/date';
 import { MISSION_CODE } from '../mission/mission.constant';
-import { CRON_SCHEDULE } from './user.constant';
+import { CRON_SCHEDULE, DAYS_IN_WEEK } from './user.constant';
 
 export const UserCron = {
   init() {
@@ -17,7 +17,7 @@ export const UserCron = {
   async autoClaimPreviousWeekRewards() {
     const thisMonday = getStartOfCurrentWeekVN();
     const lastMonday = new Date(thisMonday);
-    lastMonday.setUTCDate(lastMonday.getUTCDate() - 7);
+    lastMonday.setUTCDate(lastMonday.getUTCDate() - DAYS_IN_WEEK);
 
     const pendingClaims = await prisma.userMissionProgress.findMany({
       where: {

@@ -59,7 +59,14 @@ export const MissionService = {
     const resetDate = mission.type === 'DAILY'
       ? getStartOfTodayVN(now)
       : getStartOfCurrentWeekVN(now);
-
+    const progress = await MissionRepository.getUserMissionProgress(
+      userId,
+      mission.id,
+      resetDate,
+    );
+    if (progress?.isClaimed) {
+      return;
+    }
     return MissionRepository.upsertMissionProgress({
       userId,
       missionId: mission.id,

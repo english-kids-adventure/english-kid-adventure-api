@@ -3,6 +3,7 @@ import { JwtPayload } from '@middlewares/auth.middleware';
 import {
   LEADERBOARD_CONFIG,
   LEADERBOARD_REWARDS,
+  STREAK_CONFIG,
   USER_MESSAGE,
 } from './user.constant';
 import {
@@ -38,10 +39,13 @@ export const UserService = {
       }
       const newLongestStreak = Math.max(newStreak, user.longestStreak);
       const startOfWeek = getStartOfCurrentWeekVN(now);
-      let xpToAdd = 10;
-      if (newStreak % 7 === 0) {
-        const weeks = newStreak / 7;
-        xpToAdd = 100 + weeks * 50;
+      let xpToAdd = STREAK_CONFIG.DAILY_LOGIN_XP;
+      const isFullWeek = newStreak % STREAK_CONFIG.DAYS_IN_WEEK === 0;
+      if (isFullWeek) {
+        const weekCount = newStreak / STREAK_CONFIG.DAYS_IN_WEEK;
+        xpToAdd =
+          STREAK_CONFIG.BASE_WEEKLY_BONUS_XP +
+          weekCount * STREAK_CONFIG.XP_PER_WEEK_INCREMENT;
       }
       await Promise.all([
         UserRepository.updateUserStats(userId, {

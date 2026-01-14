@@ -17,3 +17,12 @@ export const LEADERBOARD_REWARDS = {
 export const LEADERBOARD_CONFIG = {
   TOP_LIMIT: 10,
 };
+
+export const DAYS_IN_WEEK = 7;
+
+export const STREAK_CONFIG = {
+  DAYS_IN_WEEK: 7,
+  BASE_WEEKLY_BONUS_XP: 100,
+  XP_PER_WEEK_INCREMENT: 50,
+  DAILY_LOGIN_XP: 10,
+};
