@@ -5,8 +5,8 @@ export const USER_MESSAGE = {
 };
 
 export const CRON_SCHEDULE = {
-  WEEKLY_REWARD_CLAIM: '55 23 * * 0',
-  WEEKLY_LEADERBOARD_FINALIZATION: '59 23 * * 0',
+  WEEKLY_LEADERBOARD_FINALIZATION: '0 19 * * 0',
+  WEEKLY_AUTO_CLAIM_REWARDS: '0 0 * * 1',
 };
 
 export const LEADERBOARD_REWARDS = {
@@ -16,4 +16,13 @@ export const LEADERBOARD_REWARDS = {
 } as const;
 export const LEADERBOARD_CONFIG = {
   TOP_LIMIT: 10,
+};
+
+export const DAYS_IN_WEEK = 7;
+
+export const STREAK_CONFIG = {
+  DAYS_IN_WEEK: 7,
+  BASE_WEEKLY_BONUS_XP: 100,
+  XP_PER_WEEK_INCREMENT: 50,
+  DAILY_LOGIN_XP: 10,
 };

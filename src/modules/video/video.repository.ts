@@ -1,5 +1,5 @@
 import { prisma } from '@common/config/prisma';
-import { getStartOfCurrentWeekUTC } from '@common/utils/date';
+import { getStartOfCurrentWeekVN } from '@common/utils/date';
 
 export const VideoRepository = {
   async getVideoById(videoId: number) {
@@ -28,7 +28,7 @@ export const VideoRepository = {
   },
 
   async awardUserXp(userId: number, xpAmount: number) {
-    const startOfWeek = getStartOfCurrentWeekUTC();
+    const startOfWeek = getStartOfCurrentWeekVN();
 
     return prisma.user.update({
       where: { id: userId },

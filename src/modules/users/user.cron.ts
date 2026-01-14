@@ -1,25 +1,27 @@
 import cron from 'node-cron';
 import { prisma } from '@config/prisma';
-import { getStartOfCurrentWeekUTC } from '@utils/date';
+import { getStartOfCurrentWeekVN } from '@utils/date';
 import { MISSION_CODE } from '../mission/mission.constant';
-import { CRON_SCHEDULE } from './user.constant';
+import { CRON_SCHEDULE, DAYS_IN_WEEK } from './user.constant';
 
 export const UserCron = {
   init() {
-    cron.schedule(CRON_SCHEDULE.WEEKLY_REWARD_CLAIM, async () => {
-      await this.autoClaimWeeklyRewards();
-    });
     cron.schedule(CRON_SCHEDULE.WEEKLY_LEADERBOARD_FINALIZATION, async () => {
       await this.finalizeWeeklyLeaderboard();
     });
+    cron.schedule(CRON_SCHEDULE.WEEKLY_AUTO_CLAIM_REWARDS, async () => {
+      await this.autoClaimPreviousWeekRewards();
+    });
   },
 
-  async autoClaimWeeklyRewards() {
-    const startOfWeek = getStartOfCurrentWeekUTC();
+  async autoClaimPreviousWeekRewards() {
+    const thisMonday = getStartOfCurrentWeekVN();
+    const lastMonday = new Date(thisMonday);
+    lastMonday.setUTCDate(lastMonday.getUTCDate() - DAYS_IN_WEEK);
 
     const pendingClaims = await prisma.userMissionProgress.findMany({
       where: {
-        resetDate: startOfWeek,
+        resetDate: lastMonday,
         isClaimed: false,
         mission: { type: 'WEEKLY' },
         currentCount: { gte: 1 },
@@ -46,10 +48,7 @@ export const UserCron = {
   },
 
   async finalizeWeeklyLeaderboard() {
-    const startOfWeek = getStartOfCurrentWeekUTC();
-    const nextMonday = new Date(startOfWeek);
-    nextMonday.setUTCDate(nextMonday.getUTCDate() + 7);
-
+    const startOfWeek = getStartOfCurrentWeekVN();
     const topUsers = await prisma.userWeeklyStat.findMany({
       where: { weekStartDate: startOfWeek },
       orderBy: { weeklyXp: 'desc' },
@@ -79,7 +78,7 @@ export const UserCron = {
               userId_missionId_resetDate: {
                 userId: stats.userId,
                 missionId: mission.id,
-                resetDate: nextMonday,
+                resetDate: startOfWeek,
               },
             },
             update: { currentCount: 1 },
@@ -88,10 +87,9 @@ export const UserCron = {
               missionId: mission.id,
               currentCount: 1,
               isClaimed: false,
-              resetDate: nextMonday,
+              resetDate: startOfWeek,
             },
           });
-
           await tx.userWeeklyStat.update({
             where: { id: stats.id },
             data: { finalRank: rank },

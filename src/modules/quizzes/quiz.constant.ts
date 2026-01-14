@@ -9,7 +9,3 @@ export const QUIZ_MESSAGE = {
   GET_QUIZ_ATTEMPTS_SUCCESS: 'Get user quiz attempts successfully',
 };
 
-export const getTodayTime = () => {
-  const date = new Date();
-  return new Date(date.setHours(0, 0, 0, 0));
-};

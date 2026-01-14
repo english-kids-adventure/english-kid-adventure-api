@@ -1,11 +1,16 @@
 import { UserRepository } from './user.repository';
 import { JwtPayload } from '@middlewares/auth.middleware';
-import { LEADERBOARD_CONFIG, LEADERBOARD_REWARDS, USER_MESSAGE } from './user.constant';
 import {
-  getStartOfTodayUTC,
-  getStartOfCurrentWeekUTC,
+  LEADERBOARD_CONFIG,
+  LEADERBOARD_REWARDS,
+  STREAK_CONFIG,
+  USER_MESSAGE,
+} from './user.constant';
+import {
+  getStartOfCurrentWeekVN,
   formatDateUTC,
   getDaysDifference,
+  getStartOfTodayVN,
 } from '@utils/date';
 
 export const UserService = {
@@ -14,11 +19,13 @@ export const UserService = {
     let user = await UserRepository.getProfile(userId);
     if (!user) throw new Error(USER_MESSAGE.USER_NOT_FOUND);
 
-    const today = getStartOfTodayUTC();
+    const now = new Date();
+    const today = getStartOfTodayVN(now);
     const todayStr = formatDateUTC(today);
     const lastLoginStr = user.lastLoginAt
-      ? formatDateUTC(new Date(user.lastLoginAt))
+      ? formatDateUTC(getStartOfTodayVN(new Date(user.lastLoginAt)))
       : null;
+
     if (!lastLoginStr || todayStr > lastLoginStr) {
       let newStreak = 1;
 
@@ -31,24 +38,31 @@ export const UserService = {
         }
       }
       const newLongestStreak = Math.max(newStreak, user.longestStreak);
-      const startOfWeek = getStartOfCurrentWeekUTC();
+      const startOfWeek = getStartOfCurrentWeekVN(now);
+      let xpToAdd = STREAK_CONFIG.DAILY_LOGIN_XP;
+      const isFullWeek = newStreak % STREAK_CONFIG.DAYS_IN_WEEK === 0;
+      if (isFullWeek) {
+        const weekCount = newStreak / STREAK_CONFIG.DAYS_IN_WEEK;
+        xpToAdd =
+          STREAK_CONFIG.BASE_WEEKLY_BONUS_XP +
+          weekCount * STREAK_CONFIG.XP_PER_WEEK_INCREMENT;
+      }
       await Promise.all([
         UserRepository.updateUserStats(userId, {
-          totalXp: { increment: 10 },
+          totalXp: { increment: xpToAdd },
           currentStreak: newStreak,
           longestStreak: newLongestStreak,
-          lastLoginAt: new Date(),
+          lastLoginAt: now,
           streakUpdatedAt: today,
         }),
         UserRepository.createActivityLog(userId, today),
 
-        UserRepository.addWeeklyXp(userId, startOfWeek, 10),
+        UserRepository.addWeeklyXp(userId, startOfWeek, xpToAdd),
       ]);
-      user = await UserRepository.getProfile(userId);
-      if (!user) {
-        throw new Error(USER_MESSAGE.USER_NOT_FOUND);
-      }
+      const updatedUser = await UserRepository.getProfile(userId);
+      if (updatedUser) user = updatedUser;
     }
+
     const weeklyXp = user.weeklyStats[0]?.weeklyXp || 0;
     const completedDays = user.activityLogs.map((log) =>
       new Date(log.activityDate).getUTCDay(),
@@ -66,7 +80,7 @@ export const UserService = {
     };
   },
   async getWeeklyLeaderboard(currentUserId: number) {
-    const startOfWeek = getStartOfCurrentWeekUTC();
+    const startOfWeek = getStartOfCurrentWeekVN();
     const [topStats, currentUserStat] = await Promise.all([
       UserRepository.getWeeklyLeaderboard(LEADERBOARD_CONFIG.TOP_LIMIT),
       UserRepository.getUserRankAndXp(currentUserId, startOfWeek),
