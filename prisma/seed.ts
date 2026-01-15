@@ -126,6 +126,65 @@ async function main() {
       avatarUrl: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Charlotte',
     },
   });
+  const user11 = await prisma.user.create({
+    data: {
+      name: 'Minh Hoàng',
+      email: 'hoangminh@gmail.com',
+      password,
+      totalXp: 1250,
+      totalStars: 45,
+      currentStreak: 12,
+      avatarUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Felix',
+    },
+  });
+
+  const user12 = await prisma.user.create({
+    data: {
+      name: 'Lan Anh',
+      email: 'lananh.dev@gmail.com',
+      password,
+      totalXp: 920,
+      totalStars: 30,
+      currentStreak: 5,
+      avatarUrl: 'https://api.dicebear.com/9.x/avataaars/svg?flip=false',
+    },
+  });
+
+  const user13 = await prisma.user.create({
+    data: {
+      name: 'Quốc Bảo',
+      email: 'baobao@gmail.com',
+      password,
+      totalXp: 2100,
+      totalStars: 88,
+      currentStreak: 21,
+      avatarUrl: 'https://api.dicebear.com/9.x/big-ears/svg?seed=Felix',
+    },
+  });
+
+  const user14 = await prisma.user.create({
+    data: {
+      name: 'Thu Thảo',
+      email: 'thaothu@gmail.com',
+      password,
+      totalXp: 450,
+      totalStars: 12,
+      currentStreak: 1,
+      avatarUrl: 'https://api.dicebear.com/9.x/big-ears/svg?flip=false',
+    },
+  });
+
+  const user15 = await prisma.user.create({
+    data: {
+      name: 'Tuấn Kiệt',
+      email: 'kiettuan@gmail.com',
+      password,
+      totalXp: 1580,
+      totalStars: 56,
+      currentStreak: 8,
+      avatarUrl: 'https://api.dicebear.com/9.x/avataaars/svg?seed=Aneka',
+    },
+  });
 
   // ====================== 2. INSERT TOPICS ======================
   const topic1 = await prisma.topic.create({
@@ -260,6 +319,86 @@ async function main() {
       description: 'Sounds, songs, and instruments',
       thumbnailUrl:
         'https://i.pinimg.com/1200x/a5/c5/00/a5c50039349f459a9d3e85b8a9e16d29.jpg',
+    },
+  });
+
+  const topic16 = await prisma.topic.create({
+    data: {
+      name: 'Technology',
+      description: 'Innovations, gadgets, and the digital world',
+      thumbnailUrl: 'https://i.pinimg.com/736x/bd/89/9a/bd899ac0d7dfd7784d8eb36e320978e5.jpg',
+    },
+  });
+
+  const topic17 = await prisma.topic.create({
+    data: {
+      name: 'Cooking',
+      description: 'Recipes, culinary techniques, and gastronomy',
+      thumbnailUrl: 'https://i.pinimg.com/1200x/5f/27/76/5f27767b85d6b4ea5985ffb792944e8a.jpg',
+    },
+  });
+
+  const topic18 = await prisma.topic.create({
+    data: {
+      name: 'Travel',
+      description: 'Exploring new places, cultures, and adventures',
+      thumbnailUrl: 'https://i.pinimg.com/736x/4f/b2/7f/4fb27f62960888bf5a70cd2cb10ddc5f.jpg',
+    },
+  });
+
+  const topic19 = await prisma.topic.create({
+    data: {
+      name: 'Fitness',
+      description: 'Health, workouts, and physical well-being',
+      thumbnailUrl: 'https://i.pinimg.com/736x/7f/39/25/7f39258d4374339ec7407d082044318e.jpg',
+    },
+  });
+
+  const topic20 = await prisma.topic.create({
+    data: {
+      name: 'Art & Design',
+      description: 'Creativity, painting, and visual aesthetics',
+      thumbnailUrl: 'https://i.pinimg.com/1200x/73/7d/f5/737df55c46de520716af2dae161568b0.jpg',
+    },
+  });
+
+  const topic21 = await prisma.topic.create({
+    data: {
+      name: 'Science',
+      description: 'Discoveries, experiments, and the laws of nature',
+      thumbnailUrl: 'https://i.pinimg.com/736x/21/b2/1d/21b21d288788919df0f6bec168378ce2.jpg',
+    },
+  });
+
+  const topic22 = await prisma.topic.create({
+    data: {
+      name: 'Gaming',
+      description: 'Video games, consoles, and e-sports culture',
+      thumbnailUrl: 'https://i.pinimg.com/1200x/ac/a0/03/aca003d2d697df09a9d26735a42e65fd.jpg',
+    },
+  });
+
+  const topic23 = await prisma.topic.create({
+    data: {
+      name: 'Photography',
+      description: 'Capturing moments, lighting, and visual storytelling',
+      thumbnailUrl: 'https://i.pinimg.com/1200x/da/3e/cd/da3ecdd5fdebd39d42974e7bd781698a.jpg',
+    },
+  });
+
+  const topic24 = await prisma.topic.create({
+    data: {
+      name: 'Business',
+      description: 'Entrepreneurship, finance, and market trends',
+      thumbnailUrl: 'https://i.pinimg.com/736x/24/bd/ff/24bdffdf65b982868599826c394be0a9.jpg',
+    },
+  });
+
+  const topic25 = await prisma.topic.create({
+    data: {
+      name: 'Movies',
+      description: 'Cinema, acting, and filmmaking arts',
+      thumbnailUrl: 'https://i.pinimg.com/736x/3d/0a/31/3d0a316a90cc199b0cf78d3b0d1b295f.jpg',
     },
   });
 
@@ -516,6 +655,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 50,
       orderIndex: 3,
       questions: {
         create: [
@@ -620,6 +760,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 40,
       orderIndex: 4,
       questions: {
         create: [
@@ -691,6 +832,7 @@ async function main() {
       level: 'HARD',
       unlockCost: 10,
       xpReward: 200,
+      duration: 100,
       orderIndex: 5,
       questions: {
         create: [
@@ -797,6 +939,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 60,
       orderIndex: 6,
     },
   });
@@ -809,6 +952,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 30,
       orderIndex: 7,
     },
   });
@@ -821,6 +965,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 70,
       orderIndex: 8,
     },
   });
@@ -833,6 +978,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 70,
       orderIndex: 9,
     },
   });
@@ -845,6 +991,7 @@ async function main() {
       level: 'HARD',
       unlockCost: 10,
       xpReward: 200,
+      duration: 50,
       orderIndex: 10,
     },
   });
@@ -858,6 +1005,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 50,
       orderIndex: 11,
     },
   });
@@ -870,6 +1018,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 80,
       orderIndex: 12,
     },
   });
@@ -882,6 +1031,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 90,
       orderIndex: 13,
     },
   });
@@ -894,6 +1044,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 60,
       orderIndex: 14,
     },
   });
@@ -906,6 +1057,7 @@ async function main() {
       level: 'HARD',
       unlockCost: 10,
       xpReward: 200,
+      duration: 50,
       orderIndex: 15,
     },
   });
@@ -920,6 +1072,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 40,
       orderIndex: 16,
     },
   });
@@ -932,6 +1085,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 70,
       orderIndex: 17,
     },
   });
@@ -944,6 +1098,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 60,
       orderIndex: 18,
     },
   });
@@ -955,6 +1110,7 @@ async function main() {
       url: 'https://www.youtube-nocookie.com/embed/Kpa-VBq9DB8?controls=1&rel=0&modestbranding=1',
       level: 'MEDIUM',
       unlockCost: 5,
+      duration: 60,
       xpReward: 100,
       orderIndex: 19,
     },
@@ -968,6 +1124,7 @@ async function main() {
       level: 'HARD',
       unlockCost: 10,
       xpReward: 200,
+      duration: 80,
       orderIndex: 20,
     },
   });
@@ -982,6 +1139,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 80,
       orderIndex: 21,
     },
   });
@@ -994,6 +1152,7 @@ async function main() {
       level: 'EASY',
       unlockCost: 0,
       xpReward: 50,
+      duration: 50,
       orderIndex: 22,
     },
   });
@@ -1006,6 +1165,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 50,
       orderIndex: 23,
     },
   });
@@ -1018,6 +1178,7 @@ async function main() {
       level: 'MEDIUM',
       unlockCost: 5,
       xpReward: 100,
+      duration: 50,
       orderIndex: 24,
     },
   });
@@ -1030,6 +1191,7 @@ async function main() {
       level: 'HARD',
       unlockCost: 10,
       xpReward: 200,
+      duration: 60,
       orderIndex: 25,
     },
   });
